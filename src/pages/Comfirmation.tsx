@@ -5,8 +5,15 @@ import { Button } from "../components/Button";
 
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
+import { useNavigation } from "@react-navigation/native";
+import { routes } from "../routes/stack.routes";
 
 export function Comfirmation() {
+  const navigation = useNavigation();
+
+  const handleMoveon = () => {
+    navigation.navigate(routes.plantSelect);
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
@@ -16,7 +23,7 @@ export function Comfirmation() {
           Agora vamos começar a cuidar se duas platinhas com muito cuidado.
         </Text>
         <View style={styles.footer}>
-          <Button title="Começar" />
+          <Button title="Começar" onPress={handleMoveon} />
         </View>
       </View>
     </SafeAreaView>

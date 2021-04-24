@@ -14,7 +14,7 @@ import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 import { Button } from "../components/Button";
 import { useNavigation } from "@react-navigation/native";
-import { routes } from "../routes/stack.routes";
+import { routes } from "../routes/routesName";
 
 export function UserIdentification() {
   const [isFocused, setISFocused] = useState<boolean>(false);

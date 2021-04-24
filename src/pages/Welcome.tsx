@@ -13,7 +13,7 @@ import colors from "../styles/colors";
 import { Entypo } from "@expo/vector-icons";
 import fonts from "../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
-import { routes } from "../routes/stack.routes";
+import { routes } from "../routes/routesName";
 
 export function Welcome() {
   const navigation = useNavigation();

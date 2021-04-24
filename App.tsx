@@ -8,6 +8,7 @@ import {
   Jost_600SemiBold,
 } from "@expo-google-fonts/jost";
 import { Routes } from "./src/routes";
+import { PlantContextProvider } from "./src/context/plantsContext";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -21,7 +22,9 @@ export default function App() {
   return (
     <>
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-      <Routes />
+      <PlantContextProvider>
+        <Routes />
+      </PlantContextProvider>
     </>
   );
 }

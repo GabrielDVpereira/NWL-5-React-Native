@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -13,6 +13,22 @@ import fonts from "../styles/fonts";
 import { Button } from "../components/Button";
 
 export function UserIdentification() {
+  const [isFocused, setISFocused] = useState<boolean>(false);
+  const [isFilled, setIsFilled] = useState<boolean>(false);
+  const [name, setName] = useState<string>("");
+
+  function handleInputBlur() {
+    setISFocused(false);
+  }
+
+  function handleInputFocus() {
+    setISFocused(true);
+  }
+
+  function handleInputChange(value: string) {
+    setIsFilled(!!value);
+    setName(value);
+  }
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
@@ -22,10 +38,19 @@ export function UserIdentification() {
         <View style={styles.content}>
           <View style={styles.form}>
             <View style={styles.header}>
-              <Text style={styles.emoji}>😀</Text>
+              <Text style={styles.emoji}>{isFilled ? "😀" : "😊"}</Text>
               <Text style={styles.title}>Como podemos {"\n"} Chamar você?</Text>
             </View>
-            <TextInput style={styles.input} placeholder="Digite um nome" />
+            <TextInput
+              style={[
+                styles.input,
+                (isFocused || isFilled) && { borderColor: colors.green },
+              ]}
+              placeholder="Digite um nome"
+              onBlur={handleInputBlur}
+              onFocus={handleInputFocus}
+              onChangeText={handleInputChange}
+            />
             <View style={styles.footer}>
               <Button title="Confirmar" />
             </View>

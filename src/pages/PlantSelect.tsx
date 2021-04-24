@@ -6,7 +6,6 @@ import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 import { EnviromentButton } from "../components/EnviromentButton";
 import { api } from "../services/api";
-import { AxiosResponse } from "axios";
 import { PlantCardPrimary } from "../components/PlantCardPrimary";
 
 interface PlantEnviroment {

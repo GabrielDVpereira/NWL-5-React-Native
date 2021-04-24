@@ -6,7 +6,7 @@ import { Button } from "../components/Button";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
-import { routes } from "../routes/stack.routes";
+import { routes } from "../routes/routesName";
 
 export function Comfirmation() {
   const navigation = useNavigation();

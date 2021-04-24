@@ -9,12 +9,15 @@ import {
   TouchableWithoutFeedback,
   Platform,
   Keyboard,
+  Alert,
 } from "react-native";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 import { Button } from "../components/Button";
 import { useNavigation } from "@react-navigation/native";
 import { routes } from "../routes/routesName";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function UserIdentification() {
   const [isFocused, setISFocused] = useState<boolean>(false);
@@ -23,7 +26,18 @@ export function UserIdentification() {
 
   const navigation = useNavigation();
 
-  function handleConfirmation() {
+  const nameRequiredAlert = () => {
+    Alert.alert("Como posso chamar você? 😢");
+  };
+
+  async function handleConfirmation() {
+    if (!name) {
+      nameRequiredAlert();
+      return;
+    }
+
+    await AsyncStorage.setItem("@plantmanager:user", name);
+
     navigation.navigate(routes.confirmation);
   }
 

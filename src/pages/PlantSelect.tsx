@@ -7,6 +7,7 @@ import fonts from "../styles/fonts";
 import { EnviromentButton } from "../components/EnviromentButton";
 import { api } from "../services/api";
 import { PlantCardPrimary } from "../components/PlantCardPrimary";
+import { Load } from "../components/Load";
 
 interface PlantEnviroment {
   key: string;
@@ -30,6 +31,10 @@ export function PlantSelect() {
   const [plants, setPlants] = useState<Plant[]>([]);
   const [enviromentSelected, setEnviromentSelected] = useState("all");
   const [filteredPlants, setFilteredPlants] = useState<Plant[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [loadedAll, setLoadedAll] = useState(false);
 
   useEffect(() => {
     if (!enviroments.length) {
@@ -43,10 +48,8 @@ export function PlantSelect() {
 
   useEffect(() => {
     if (!plants.length) {
-      api.get("/plants?_sort=name&_order=asc").then(({ data }) => {
-        setPlants(data);
-        setFilteredPlants(data);
-      });
+      setLoading(true);
+      fetchPlants();
     }
   }, []);
 
@@ -60,9 +63,39 @@ export function PlantSelect() {
     setFilteredPlants(filtered);
   }, [enviromentSelected]);
 
+  const fetchPlants = async () => {
+    const { data } = await api.get(
+      `/plants?_sort=name&_order=asc&_page=${page}&_limit=8`
+    );
+    if (!data.length) return setLoadedAll(true);
+
+    if (page > 1) {
+      setPlants((oldState) => [...oldState, ...data]);
+    } else {
+      setPlants(data);
+      setFilteredPlants(data);
+    }
+
+    setLoading(false);
+    setLoadingMore(false);
+  };
+  const handleFectchMore = (distance: number) => {
+    if (distance < 1) {
+      return;
+    }
+
+    setLoadingMore(true);
+    setPage((oldState) => oldState + 1);
+    fetchPlants();
+  };
+
   const handleEnviromentSelected = (enviroment: PlantEnviroment) => {
     setEnviromentSelected(enviroment.key);
   };
+
+  if (loading) {
+    return <Load />;
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -98,6 +131,10 @@ export function PlantSelect() {
           )}
           showsVerticalScrollIndicator={false}
           numColumns={2}
+          onEndReachedThreshold={0.1}
+          onEndReached={({ distanceFromEnd }) =>
+            handleFectchMore(distanceFromEnd)
+          }
         />
       </View>
     </SafeAreaView>

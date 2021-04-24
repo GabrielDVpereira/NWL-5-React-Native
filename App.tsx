@@ -1,8 +1,6 @@
 import React from "react";
-import { Text, View, StatusBar } from "react-native";
-import { Welcome } from "./src/pages/Welcome";
-import { UserIdentification } from "./src/pages/UserIdentification";
-import { Comfirmation } from "./src/pages/Comfirmation";
+import { StatusBar } from "react-native";
+
 import AppLaoding from "expo-app-loading";
 import {
   useFonts,

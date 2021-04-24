@@ -52,8 +52,6 @@ export function PlantContextProvider({ children }: Props) {
     selectPlantsByEnviroment();
   }, [enviromentSelected, plants]);
 
-  console.log(plantsByEnviroment);
-
   async function loadPageInformation() {
     try {
       setLoadingPage(true);

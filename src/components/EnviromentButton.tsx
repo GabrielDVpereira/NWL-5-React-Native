@@ -1,6 +1,6 @@
 import React from "react";
 
-import { View, StyleSheet, Text } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { RectButton, RectButtonProps } from "react-native-gesture-handler";
 
 import colors from "../styles/colors";

@@ -16,7 +16,7 @@ export function Comfirmation() {
           Agora vamos começar a cuidar se duas platinhas com muito cuidado.
         </Text>
         <View style={styles.footer}>
-          <Button title="confirmar" />
+          <Button title="Começar" />
         </View>
       </View>
     </SafeAreaView>

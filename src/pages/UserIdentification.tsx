@@ -11,11 +11,19 @@ import {
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 import { Button } from "../components/Button";
+import { useNavigation } from "@react-navigation/native";
+import { routes } from "../routes/stack.routes";
 
 export function UserIdentification() {
   const [isFocused, setISFocused] = useState<boolean>(false);
   const [isFilled, setIsFilled] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
+
+  const navigation = useNavigation();
+
+  function handleConfirmation() {
+    navigation.navigate(routes.confirmation);
+  }
 
   function handleInputBlur() {
     setISFocused(false);
@@ -52,7 +60,7 @@ export function UserIdentification() {
               onChangeText={handleInputChange}
             />
             <View style={styles.footer}>
-              <Button title="Confirmar" />
+              <Button title="Confirmar" onPress={handleConfirmation} />
             </View>
           </View>
         </View>

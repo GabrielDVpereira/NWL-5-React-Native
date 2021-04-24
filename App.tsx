@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, View, StatusBar } from "react-native";
 import { Welcome } from "./src/pages/Welcome";
+import { UserIdentification } from "./src/pages/UserIdentification";
 import AppLaoding from "expo-app-loading";
 import {
   useFonts,
@@ -20,7 +21,7 @@ export default function App() {
   return (
     <>
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-      <Welcome />
+      <UserIdentification />
     </>
   );
 }

@@ -15,7 +15,7 @@ export async function savePlantStorage(plant: Plant): Promise<void> {
 
     const newPlant = {
       [plant.id]: {
-        date: plant,
+        data: plant,
       },
     };
 

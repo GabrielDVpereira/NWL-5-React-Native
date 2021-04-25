@@ -3,4 +3,5 @@ export const routes = {
   userIdentification: "userIdentification",
   confirmation: "confirmation",
   plantSelect: "plantSelect",
+  plantSave: "PlantSave",
 };

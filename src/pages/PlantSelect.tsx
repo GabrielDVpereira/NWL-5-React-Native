@@ -15,8 +15,12 @@ import { EnviromentButton } from "../components/EnviromentButton";
 import { PlantCardPrimary } from "../components/PlantCardPrimary";
 import { Load } from "../components/Load";
 import { usePlants } from "../hooks/usePlants";
+import { Plant } from "../context/plantsContext";
+import { useNavigation } from "@react-navigation/native";
+import { routes } from "../routes/routesName";
 
 export function PlantSelect() {
+  const navigation = useNavigation();
   const {
     enviroments,
     isLoadingPage,
@@ -35,6 +39,9 @@ export function PlantSelect() {
     }
   }, []);
 
+  function selectNewPlant(plant: Plant) {
+    navigation.navigate(routes.plantSave, { plant });
+  }
   if (isLoadingPage) {
     return <Load />;
   }
@@ -69,7 +76,10 @@ export function PlantSelect() {
           data={plants}
           keyExtractor={(key) => String(key.name)}
           renderItem={({ item, index }) => (
-            <PlantCardPrimary data={{ name: item.name, photo: item.photo }} />
+            <PlantCardPrimary
+              data={{ name: item.name, photo: item.photo }}
+              onPress={() => selectNewPlant(item)}
+            />
           )}
           showsVerticalScrollIndicator={false}
           numColumns={2}

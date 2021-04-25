@@ -5,4 +5,5 @@ export const routes = {
   plantSelect: "plantSelect",
   plantSave: "PlantSave",
   myPlants: "myPlant",
+  newPlant: "newPlant",
 };

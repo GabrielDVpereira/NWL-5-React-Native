@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, FlatList } from "react-native";
 import { Header } from "../components/Header";
 import colors from "../styles/colors";
 import waterDrop from "../assets/waterdrop.png";
-import { FlatList } from "react-native-gesture-handler";
 import { Plant } from "../context/plantsContext";
 import { loadPlantsFromStorage } from "../libs/storage";
 import { formatDistance } from "date-fns";
@@ -25,6 +24,7 @@ export function MyPlants() {
         new Date().getTime(),
         { locale: pt }
       );
+      console.log(plantsStorage);
 
       setNextWatered(
         `Não esqueça de regar a ${plantsStorage[0].name} à ${nextTime}`
@@ -54,7 +54,6 @@ export function MyPlants() {
             return <PlantCardSecondary data={item} />;
           }}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ flex: 1 }}
         />
       </View>
     </View>

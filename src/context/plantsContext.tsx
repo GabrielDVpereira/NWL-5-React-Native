@@ -22,6 +22,7 @@ export interface Plant {
     repeat_every: string;
   };
   dateTimeNotification: Date;
+  hour: string;
 }
 
 interface plantContextData {

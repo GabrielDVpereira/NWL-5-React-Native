@@ -33,7 +33,6 @@ export function MyPlants() {
         new Date().getTime(),
         { locale: pt }
       );
-      console.log(plantsStorage);
 
       setNextWatered(
         `Não esqueça de regar a ${plantsStorage[0].name} à ${nextTime}`

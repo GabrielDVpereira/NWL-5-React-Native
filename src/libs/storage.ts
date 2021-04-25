@@ -39,7 +39,7 @@ export async function savePlantStorage(plant: Plant): Promise<void> {
         },
       },
       trigger: {
-        seconds: seconds < 60 ? 60 : seconds,
+        seconds: 60,
         repeats: true,
       },
     });

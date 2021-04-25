@@ -1,14 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  FlatList,
+  Alert,
+  AsyncStorage,
+} from "react-native";
 import { Header } from "../components/Header";
 import colors from "../styles/colors";
 import waterDrop from "../assets/waterdrop.png";
 import { Plant } from "../context/plantsContext";
-import { loadPlantsFromStorage } from "../libs/storage";
+import { loadPlantsFromStorage, deletePlantFromStorage } from "../libs/storage";
 import { formatDistance } from "date-fns";
 import { pt } from "date-fns/locale";
 import fonts from "../styles/fonts";
 import { PlantCardSecondary } from "../components/PlantCardSecondary";
+import { Load } from "../components/Load";
 
 export function MyPlants() {
   const [myPlants, setMyPlants] = useState<Plant[]>([]);
@@ -35,6 +44,33 @@ export function MyPlants() {
 
     loadPlants();
   }, []);
+
+  function removeItem(plant: Plant) {
+    Alert.alert("Remover", `Deseja remover ${plant.name}?`, [
+      {
+        text: "Não 🙏",
+        style: "cancel",
+      },
+      {
+        text: "Sim 😢",
+        onPress: () => {
+          try {
+            deletePlantFromStorage(plant);
+            setMyPlants((oldState) => {
+              return oldState.filter(
+                (statePlant) => statePlant.id !== plant.id
+              );
+            });
+          } catch {
+            Alert.alert("Não foi possível remover.");
+          }
+        },
+      },
+    ]);
+  }
+
+  if (loading) return <Load />;
+
   return (
     <View style={styles.container}>
       <Header />
@@ -51,7 +87,12 @@ export function MyPlants() {
           data={myPlants}
           keyExtractor={(key) => String(key.id)}
           renderItem={({ item }) => {
-            return <PlantCardSecondary data={item} />;
+            return (
+              <PlantCardSecondary
+                data={item}
+                removeItem={() => removeItem(item)}
+              />
+            );
           }}
           showsVerticalScrollIndicator={false}
         />

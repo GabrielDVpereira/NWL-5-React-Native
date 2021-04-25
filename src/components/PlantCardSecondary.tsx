@@ -1,10 +1,12 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Animated } from "react-native";
 import { SvgFromUri } from "react-native-svg";
 
 import { RectButton, RectButtonProps } from "react-native-gesture-handler";
+import { Swipeable } from "react-native-gesture-handler";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
+import { Feather } from "@expo/vector-icons";
 
 interface PlantProps extends RectButtonProps {
   data: {
@@ -12,19 +14,37 @@ interface PlantProps extends RectButtonProps {
     photo: string;
     hour: string;
   };
+  removeItem: () => void;
 }
 
-export const PlantCardSecondary = ({ data, ...rest }: PlantProps) => {
+export const PlantCardSecondary = ({
+  data,
+  removeItem,
+  ...rest
+}: PlantProps) => {
   return (
-    <RectButton style={styles.container} {...rest}>
-      <SvgFromUri uri={data.photo} width={50} height={50} />
+    <Swipeable
+      overshootRight={false}
+      renderRightActions={() => (
+        <Animated.View>
+          <View>
+            <RectButton onPress={removeItem} style={styles.buttonRemove}>
+              <Feather name="trash" size={32} color={colors.white} />
+            </RectButton>
+          </View>
+        </Animated.View>
+      )}
+    >
+      <RectButton style={styles.container} {...rest}>
+        <SvgFromUri uri={data.photo} width={50} height={50} />
 
-      <Text style={styles.title}>{data.name}</Text>
-      <View style={styles.details}>
-        <Text style={styles.timeLabel}>Regar às</Text>
-        <Text style={styles.time}>{data.hour}</Text>
-      </View>
-    </RectButton>
+        <Text style={styles.title}>{data.name}</Text>
+        <View style={styles.details}>
+          <Text style={styles.timeLabel}>Regar às</Text>
+          <Text style={styles.time}>{data.hour}</Text>
+        </View>
+      </RectButton>
+    </Swipeable>
   );
 };
 
@@ -61,5 +81,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: fonts.heading,
     color: colors.body_dark,
+  },
+  buttonRemove: {
+    width: 100,
+    height: 85,
+    backgroundColor: colors.red,
+    marginTop: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingLeft: 15,
+    borderRadius: 20,
+    position: "relative",
+    right: 20,
   },
 });

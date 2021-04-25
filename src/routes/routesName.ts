@@ -4,4 +4,5 @@ export const routes = {
   confirmation: "confirmation",
   plantSelect: "plantSelect",
   plantSave: "PlantSave",
+  myPlants: "myPlant",
 };

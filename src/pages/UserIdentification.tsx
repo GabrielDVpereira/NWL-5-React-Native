@@ -34,7 +34,17 @@ export function UserIdentification() {
 
     try {
       await AsyncStorage.setItem("@plantmanager:user", name);
-      navigation.navigate(routes.confirmation);
+
+      const confirmationPageInformation = {
+        title: "Prontinho",
+        subtitle:
+          "Agora vamos começar a cuidar das suas plantinhas com muito cuidado",
+        buttonTitle: "começar",
+        icon: "smile",
+        nextScreen: routes.plantSelect,
+      };
+
+      navigation.navigate(routes.confirmation, confirmationPageInformation);
     } catch {
       Alert.alert("Não foi possível savar o seu nome");
     }

@@ -26,19 +26,18 @@ export function UserIdentification() {
 
   const navigation = useNavigation();
 
-  const nameRequiredAlert = () => {
-    Alert.alert("Como posso chamar você? 😢");
-  };
-
   async function handleConfirmation() {
     if (!name) {
-      nameRequiredAlert();
+      Alert.alert("Como posso chamar você? 😢");
       return;
     }
 
-    await AsyncStorage.setItem("@plantmanager:user", name);
-
-    navigation.navigate(routes.confirmation);
+    try {
+      await AsyncStorage.setItem("@plantmanager:user", name);
+      navigation.navigate(routes.confirmation);
+    } catch {
+      Alert.alert("Não foi possível savar o seu nome");
+    }
   }
 
   function handleInputBlur() {

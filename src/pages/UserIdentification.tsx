@@ -16,8 +16,7 @@ import fonts from "../styles/fonts";
 import { Button } from "../components/Button";
 import { useNavigation } from "@react-navigation/native";
 import { routes } from "../routes/routesName";
-
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { saveUsernameStorage } from "../libs/storage";
 
 export function UserIdentification() {
   const [isFocused, setISFocused] = useState<boolean>(false);
@@ -33,7 +32,7 @@ export function UserIdentification() {
     }
 
     try {
-      await AsyncStorage.setItem("@plantmanager:user", name);
+      await saveUsernameStorage(name);
 
       const confirmationPageInformation = {
         title: "Prontinho",
@@ -45,8 +44,8 @@ export function UserIdentification() {
       };
 
       navigation.navigate(routes.confirmation, confirmationPageInformation);
-    } catch {
-      Alert.alert("Não foi possível savar o seu nome");
+    } catch (err) {
+      Alert.alert(err.message);
     }
   }
 

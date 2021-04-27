@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-
 import { View, Text, StyleSheet, Image } from "react-native";
 import colors from "../styles/colors";
 import AvatarImg from "../assets/gabriel.jpeg";
 import fonts from "../styles/fonts";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getUsernameFromStorage } from "../libs/storage";
 
 export function Header() {
   const [userName, setUserName] = useState<string>();
@@ -13,7 +12,7 @@ export function Header() {
 
   useEffect(() => {
     async function getUserFromStorage() {
-      const user = await AsyncStorage.getItem("@plantmanager:user");
+      const user = await getUsernameFromStorage();
       if (user) {
         setUserName(user);
       }

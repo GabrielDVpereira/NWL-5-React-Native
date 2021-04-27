@@ -107,3 +107,20 @@ export async function deletePlantFromStorage(plant: Plant): Promise<void> {
     throw new Error(error);
   }
 }
+
+export async function saveUsernameStorage(name: string): Promise<void> {
+  try {
+    await AsyncStorage.setItem("@plantmanager:user", name);
+  } catch {
+    throw new Error("Não foi possível salvar o seu nome");
+  }
+}
+
+export async function getUsernameFromStorage(): Promise<string | null> {
+  try {
+    const name = AsyncStorage.getItem("@plantmanager:user");
+    return name;
+  } catch {
+    throw new Error("Não foi possível recuperar nome do usuário");
+  }
+}

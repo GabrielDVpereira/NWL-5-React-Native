@@ -10,6 +10,12 @@ import {
 } from "@expo-google-fonts/jost";
 import { Routes } from "./src/routes";
 import { PlantContextProvider, Plant } from "./src/context/plantsContext";
+import DeviceContextProvider from "./src/context/deviceContext";
+
+if (__DEV__) {
+  require('react-devtools');
+}
+
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -38,9 +44,11 @@ export default function App() {
   return (
     <>
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+      <DeviceContextProvider>
       <PlantContextProvider>
         <Routes />
       </PlantContextProvider>
+      </DeviceContextProvider>
     </>
   );
 }

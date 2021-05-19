@@ -11,6 +11,7 @@ import {
 import { Routes } from "./src/routes";
 import { PlantContextProvider, Plant } from "./src/context/plantsContext";
 import DeviceContextProvider from "./src/context/deviceContext";
+import { ConnectionMessage } from "./src/components/ConectionMessage";
 
 if (__DEV__) {
   require('react-devtools');
@@ -47,6 +48,7 @@ export default function App() {
       <DeviceContextProvider>
       <PlantContextProvider>
         <Routes />
+        <ConnectionMessage />
       </PlantContextProvider>
       </DeviceContextProvider>
     </>

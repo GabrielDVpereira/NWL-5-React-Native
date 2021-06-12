@@ -1,10 +1,7 @@
-interface SnackRefProps {
-  openSnack: () => void; 
-  closeSnack: () => void; 
-}
+import { SnackHandles } from "./types";
 
 class SnackBarRef {
-  private snackabar: SnackRefProps | null = null;
+  private snackabar: SnackHandles | null = null;
   
   get ref(){
     return this.snackabar; 

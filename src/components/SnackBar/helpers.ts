@@ -1,8 +1,8 @@
 import snackBarRef from './SnackBarRef'; 
+import { SnackBarOptions } from './types';
 
-
-export const showSnackBar = () => {
-  return snackBarRef.ref?.openSnack()
+export const showSnackBar = (options: SnackBarOptions) => {
+  return snackBarRef.ref?.openSnack(options)
 }
 
 export const hideSnackBar = () => {

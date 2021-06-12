@@ -1,6 +1,7 @@
 
 import React, {createContext, ReactNode, useEffect, useState} from 'react'; 
 import NetInfo from "@react-native-community/netinfo";
+import { showSnackBar } from '../components/SnackBar';
 
 interface DeviceContext {
   isConnected: boolean | null;
@@ -21,6 +22,9 @@ export default function DeviceContextProvider({
   
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
+      if(!state.isConnected){
+        showSnackBar({message: "You're currently offline", type: 'error'})
+      }
       setIsConnected(state.isConnected);
     });
     

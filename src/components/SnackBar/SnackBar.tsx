@@ -1,60 +1,73 @@
-import React, { ReactNode, useEffect, useRef, forwardRef, useImperativeHandle, ForwardRefRenderFunction, useCallback } from 'react';
-import { View, Text, StyleSheet, Animated } from 'react-native'; 
+import React, {useRef, forwardRef, useImperativeHandle, ForwardRefRenderFunction, useCallback, useState } from 'react';
+import {  Text, StyleSheet, Animated, Pressable } from 'react-native'; 
 import colors from '../../styles/colors';
+import { SnackBarOptions, SnackHandles } from './types';
 
-interface SnackBarOptions {
-  type?: 'sucess' | 'error' | 'info';  
-  top?: boolean;  
-  bottom?: boolean; 
-  message: ReactNode;
-}
-interface SnackRefProps {
-  openSnack: () => void; 
-  closeSnack: () => void; 
-}
 
-const SNACK_HEIGHT = 20; 
+const SNACK_HEIGHT = 30; 
 
-export const SnackBar:ForwardRefRenderFunction<SnackRefProps> = (_, ref) => {
-
+export const SnackBar:ForwardRefRenderFunction<SnackHandles> = (_, ref) => {
+  const [snackOptions, setSnackOptions] = useState<SnackBarOptions>({} as SnackBarOptions); 
   const containerVisibilityAnimation = useRef(new Animated.Value(SNACK_HEIGHT)).current;
-  const snackOptions = useRef<SnackBarOptions>({ message: ''})
+
+  const translateFromBottomToTop = { transform: [{translateY: containerVisibilityAnimation }] }
+  const translateFroTopBottom = { transform: [{
+    translateY: containerVisibilityAnimation.interpolate({
+      inputRange: [0,SNACK_HEIGHT ], 
+      outputRange: [0, -SNACK_HEIGHT]
+      })
+    }]
+  }
   
  
    const getContainerBgStyleByType = () => {
       const containerBgStyleByType = {
         'info': styles.infoContainer, 
-        'sucess': styles.sucessContainer, 
+        'success': styles.sucessContainer, 
         'error': styles.errorContainer
       }
-      return containerBgStyleByType[snackOptions.current?.type || 'info']
+      return containerBgStyleByType[snackOptions.type || 'info']
     }
 
     const getContainerPositionByStatus = () => {
-      if(snackOptions.current?.top){
+      if(snackOptions.top){
         return styles.containerTop
       }
       return styles.containerBottom
     }
 
     const getContainerVisibility = () => {
-        return {transform: [{translateY: containerVisibilityAnimation }]}
+      if(snackOptions.top){
+        return translateFroTopBottom
+      }
+        return translateFromBottomToTop
     }
 
-    const openSnack = useCallback(() => {
-      Animated.timing(containerVisibilityAnimation, {
-        duration: 400, 
-        toValue: 0, 
+    const openAndHideAnimation = (duration: number) => {
+      Animated.sequence([
+        timingAnimation(400, 0), 
+        Animated.delay(duration), 
+        timingAnimation(400, SNACK_HEIGHT)
+      ]).start()
+    }
+  
+    const timingAnimation = (duration: number, toValue: number) => {
+      return Animated.timing(containerVisibilityAnimation, {
+        duration, 
+        toValue, 
         useNativeDriver: true
-      }).start()
+      })
+    }
+    const openSnack = useCallback((options: SnackBarOptions) => {
+      setSnackOptions(options)
+      if(options.durantion){
+        return openAndHideAnimation(options.durantion);
+      }
+      timingAnimation(400, 0).start()
     },[])
 
     const closeSnack = useCallback(() => {
-      Animated.timing(containerVisibilityAnimation, {
-        duration: 400, 
-        toValue: -SNACK_HEIGHT, 
-        useNativeDriver: true
-      }).start()
+      timingAnimation(400, SNACK_HEIGHT).start()
     },[])
 
     useImperativeHandle(ref, () => ({
@@ -62,10 +75,19 @@ export const SnackBar:ForwardRefRenderFunction<SnackRefProps> = (_, ref) => {
       closeSnack
     }), [openSnack,closeSnack])
 
+    const onPress = () => {
+      closeSnack()
+      if(snackOptions.onPress){
+        snackOptions.onPress()
+      }
+    }
+
     return(
       <Animated.View style={[styles.container, getContainerPositionByStatus() , getContainerBgStyleByType(), getContainerVisibility() ]}>
-        <Text style={styles.message} >{snackOptions.current?.message}</Text>
-      </Animated.View>
+          <Pressable onPress={onPress} style={styles.pressContainer}>
+            <Text style={styles.message} >{snackOptions.message}</Text>
+          </Pressable>
+        </Animated.View>
     )
 }
 
@@ -99,5 +121,11 @@ const styles = StyleSheet.create({
   },
   message: {
     color: colors.white
+  }, 
+  pressContainer: {
+    width: '100%', 
+    height: "100%",
+    justifyContent: 'center', 
+    alignItems: 'center'
   }
 })

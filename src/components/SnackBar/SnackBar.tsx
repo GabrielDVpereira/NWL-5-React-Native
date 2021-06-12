@@ -1,71 +1,75 @@
-import React, { ReactNode, useEffect, useRef } from 'react';
+import React, { ReactNode, useEffect, useRef, forwardRef, useImperativeHandle, ForwardRefRenderFunction, useCallback } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native'; 
-import colors from '../styles/colors';
+import colors from '../../styles/colors';
 
-interface SnackBarProps {
-  message: ReactNode;
-  bottom?: boolean; 
-  top?: boolean;  
+interface SnackBarOptions {
   type?: 'sucess' | 'error' | 'info';  
-  isOpen: boolean; 
+  top?: boolean;  
+  bottom?: boolean; 
+  message: ReactNode;
+}
+interface SnackRefProps {
+  openSnack: () => void; 
+  closeSnack: () => void; 
 }
 
 const SNACK_HEIGHT = 20; 
 
-export function SnackBar({ message, top=false, type='info', isOpen=false } : SnackBarProps){
+export const SnackBar:ForwardRefRenderFunction<SnackRefProps> = (_, ref) => {
 
-  const containerVisibilityAnimation = useRef(new Animated.Value(-SNACK_HEIGHT)).current;
+  const containerVisibilityAnimation = useRef(new Animated.Value(SNACK_HEIGHT)).current;
+  const snackOptions = useRef<SnackBarOptions>({ message: ''})
   
-  useEffect(() => {
-    if(isOpen){
-      openSnack()
-    } else {
-      closeSnack()
-    }
-  }, [isOpen])
-
+ 
    const getContainerBgStyleByType = () => {
       const containerBgStyleByType = {
         'info': styles.infoContainer, 
         'sucess': styles.sucessContainer, 
         'error': styles.errorContainer
       }
-      return containerBgStyleByType[type]
+      return containerBgStyleByType[snackOptions.current?.type || 'info']
     }
 
     const getContainerPositionByStatus = () => {
-      if(top ){
+      if(snackOptions.current?.top){
         return styles.containerTop
       }
       return styles.containerBottom
     }
 
     const getContainerVisibility = () => {
-        return {transform: [{translateY: containerVisibilityAnimation}]}
+        return {transform: [{translateY: containerVisibilityAnimation }]}
     }
 
-    const openSnack = () => {
+    const openSnack = useCallback(() => {
       Animated.timing(containerVisibilityAnimation, {
         duration: 400, 
         toValue: 0, 
         useNativeDriver: true
       }).start()
-    }
+    },[])
 
-    const closeSnack = () => {
+    const closeSnack = useCallback(() => {
       Animated.timing(containerVisibilityAnimation, {
         duration: 400, 
         toValue: -SNACK_HEIGHT, 
         useNativeDriver: true
       }).start()
-    }
+    },[])
+
+    useImperativeHandle(ref, () => ({
+      openSnack, 
+      closeSnack
+    }), [openSnack,closeSnack])
 
     return(
       <Animated.View style={[styles.container, getContainerPositionByStatus() , getContainerBgStyleByType(), getContainerVisibility() ]}>
-        <Text style={styles.message} >{message}</Text>
+        <Text style={styles.message} >{snackOptions.current?.message}</Text>
       </Animated.View>
     )
 }
+
+export default forwardRef(SnackBar)
 
 
 const styles = StyleSheet.create({

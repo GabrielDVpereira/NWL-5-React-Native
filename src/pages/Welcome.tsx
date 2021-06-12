@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Text,
   View,
@@ -15,6 +15,7 @@ import fonts from "../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
 import { routes } from "../routes/routesName";
 import { FadeIn } from "../animations/FadeIn";
+import { showSnackBar } from '../components/SnackBar'
 
 export function Welcome() {
   const navigation = useNavigation();

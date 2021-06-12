@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'; 
-import { SnackBar } from './SnackBar';
+import { SnackBar } from './SnackBar /SnackBar';
 import { useDevice } from '../hooks/useDevice'; 
 
 export function ConnectionMessage(){
@@ -19,5 +19,5 @@ export function ConnectionMessage(){
 
   const snackType = isConnected ? 'sucess' : 'error'; 
 
-  return <SnackBar message={isConnected ? onlineMsg : offlineMsg} type={snackType} top={true} isOpen={showSnack}/>
+  return <SnackBar  />
 }

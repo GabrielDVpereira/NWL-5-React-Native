@@ -13,11 +13,6 @@ import { PlantContextProvider, Plant } from "./src/context/plantsContext";
 import DeviceContextProvider from "./src/context/deviceContext";
 import { SnackBar,  SnackBarRef } from "./src/components/SnackBar";
 
-if (__DEV__) {
-  require('react-devtools');
-}
-
-
 export default function App() {
   const [fontsLoaded] = useFonts({
     Jost_400Regular,

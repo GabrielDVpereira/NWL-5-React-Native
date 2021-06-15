@@ -45,7 +45,7 @@ export function Welcome() {
           <TouchableOpacity
             style={styles.button}
             activeOpacity={0.8}
-            onPress={()=> showSnackBar({ message: 'teste', durantion: 3000, type: "success", top: true })}
+            onPress={()=> showSnackBar({ message: 'Teste', duration: 3000, type: "success", top: true})}
           >
             <Entypo name="chevron-right" style={styles.buttonIcon} />
           </TouchableOpacity>

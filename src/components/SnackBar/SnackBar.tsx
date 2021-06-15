@@ -2,14 +2,15 @@ import React, {useRef, forwardRef, useImperativeHandle, ForwardRefRenderFunction
 import {  Text, StyleSheet, Animated, Pressable } from 'react-native'; 
 import colors from '../../styles/colors';
 import { SnackBarOptions, SnackHandles } from './types';
-
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 const SNACK_HEIGHT = 30; 
 
 export const SnackBar:ForwardRefRenderFunction<SnackHandles> = (_, ref) => {
   const [snackOptions, setSnackOptions] = useState<SnackBarOptions>({} as SnackBarOptions); 
+  const insets = useSafeAreaInsets(); 
   const containerVisibilityAnimation = useRef(new Animated.Value(SNACK_HEIGHT)).current;
-
+  const openValue = useRef(snackOptions.top ? -insets.top : -insets.bottom).current;  // avoiding phones notch and bottom when opening the snack
   const translateFromBottomToTop = { transform: [{translateY: containerVisibilityAnimation }] }
   const translateFroTopBottom = { transform: [{
     translateY: containerVisibilityAnimation.interpolate({
@@ -45,7 +46,7 @@ export const SnackBar:ForwardRefRenderFunction<SnackHandles> = (_, ref) => {
 
     const openAndHideAnimation = (duration: number) => {
       Animated.sequence([
-        timingAnimation(400, 0), 
+        timingAnimation(400, openValue), 
         Animated.delay(duration), 
         timingAnimation(400, SNACK_HEIGHT)
       ]).start()
@@ -60,10 +61,10 @@ export const SnackBar:ForwardRefRenderFunction<SnackHandles> = (_, ref) => {
     }
     const openSnack = useCallback((options: SnackBarOptions) => {
       setSnackOptions(options)
-      if(options.durantion){
-        return openAndHideAnimation(options.durantion);
+      if(options.duration){
+        return openAndHideAnimation(options.duration);
       }
-      timingAnimation(400, 0).start()
+      timingAnimation(400, openValue).start()
     },[])
 
     const closeSnack = useCallback(() => {
@@ -83,10 +84,10 @@ export const SnackBar:ForwardRefRenderFunction<SnackHandles> = (_, ref) => {
     }
 
     return(
-      <Animated.View style={[styles.container, getContainerPositionByStatus() , getContainerBgStyleByType(), getContainerVisibility() ]}>
-          <Pressable onPress={onPress} style={styles.pressContainer}>
-            <Text style={styles.message} >{snackOptions.message}</Text>
-          </Pressable>
+        <Animated.View style={[styles.container, getContainerPositionByStatus() , getContainerBgStyleByType(), getContainerVisibility() ]}>
+            <Pressable onPress={onPress} style={styles.pressContainer}>
+              <Text style={styles.message} >{snackOptions.message}</Text>
+            </Pressable>
         </Animated.View>
     )
 }

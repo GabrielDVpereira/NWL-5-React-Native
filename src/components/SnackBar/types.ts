@@ -3,7 +3,7 @@ export interface SnackBarOptions {
   top?: boolean;  
   bottom?: boolean; 
   message: string;
-  durantion?: number; 
+  duration?: number; 
   onPress?: () => void
 }
 export interface SnackHandles {

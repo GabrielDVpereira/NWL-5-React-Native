@@ -18,12 +18,11 @@ export default function DeviceContextProvider({
   children
 }: DeviceContextProps){
   const [isConnected, setIsConnected] = useState<boolean | null>(null); 
-  
-  
+
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
-      if(!state.isConnected){
-        showSnackBar({message: "You're currently offline", type: 'error'})
+      if(true){
+        showSnackBar({message: "You're currently offline", type: 'error', top: true})
       }
       setIsConnected(state.isConnected);
     });

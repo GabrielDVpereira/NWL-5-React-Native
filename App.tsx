@@ -12,6 +12,7 @@ import { Routes } from "./src/routes";
 import { PlantContextProvider, Plant } from "./src/context/plantsContext";
 import DeviceContextProvider from "./src/context/deviceContext";
 import { SnackBar,  SnackBarRef } from "./src/components/SnackBar";
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -40,16 +41,18 @@ export default function App() {
   return (
     <>
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-      <DeviceContextProvider>
-      <PlantContextProvider>
-        <Routes />
-        <SnackBar 
-          ref={(ref) => {
-            SnackBarRef.ref = ref
-          }}
-        />
-      </PlantContextProvider>
-      </DeviceContextProvider>
+      <SafeAreaProvider>
+        <DeviceContextProvider>
+          <PlantContextProvider>
+            <Routes />
+            <SnackBar 
+              ref={(ref) => {
+                SnackBarRef.ref = ref
+              }}
+              />
+          </PlantContextProvider>
+        </DeviceContextProvider>
+      </SafeAreaProvider>
     </>
   );
 }
